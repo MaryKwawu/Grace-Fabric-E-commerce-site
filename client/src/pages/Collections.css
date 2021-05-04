@@ -1,0 +1,23 @@
+/* .fabricwall {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  border-radius: 1.5rem;
+} */
+
+.each-slide > div {
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  /* background-size: cover; */
+  height: 450px;
+}
+
+.each-slide span {
+  /* padding: 20px; */
+  background: #efefef;
+  /* text-align: center; */
+}
+
+.container1 {
+  background-position: center;
+}

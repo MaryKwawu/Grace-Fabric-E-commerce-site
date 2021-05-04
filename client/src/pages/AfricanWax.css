@@ -1,0 +1,13 @@
+.backgroundimage {
+  background-repeat: no-repeat;
+}
+
+.wax {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.container1 {
+  background-position: top;
+  /* width: 50vh; */
+}

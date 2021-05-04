@@ -1,0 +1,5 @@
+.plain {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  /* background-color: #f3e5f5; */
+}

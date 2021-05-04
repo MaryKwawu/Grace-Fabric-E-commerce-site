@@ -1,0 +1,22 @@
+.menu-icon:hover {
+  cursor: pointer;
+}
+
+.menu-icon {
+}
+
+.fabric-menu {
+  transition: max-height 2ms ease-in;
+}
+
+.full-menu {
+  max-height: max-content;
+}
+
+.min-menu {
+  max-height: 0px;
+}
+
+.off {
+  display: none;
+}

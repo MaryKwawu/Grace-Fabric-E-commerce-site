@@ -1,0 +1,41 @@
+a {
+  color: #371a12;
+  font-size: 120%;
+}
+
+h1 {
+  color: #974617;
+}
+.social {
+  background-color: #974617;
+  padding-bottom: 0px;
+  text-align: center;
+  padding-top: 0px;
+}
+
+.social ul {
+  display: flex;
+  justify-content: center;
+}
+
+.footer-bottom {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.service {
+  /* display: flex; */
+  justify-content: center;
+  position: relative;
+  /* top: 125px; */
+}
+
+.page-footer {
+  padding-top: 20pt;
+}
+
+/* #menu-item-30 {
+  size: 30%;
+} */

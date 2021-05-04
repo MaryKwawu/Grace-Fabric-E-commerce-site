@@ -1,0 +1,19 @@
+.login-page {
+  height: 80vh;
+  /* width: 100%; */
+  display: flex;
+  justify-content: center;
+  padding: 2rem 2rem;
+  align-items: center;
+}
+
+.input-fieldss {
+  border-radius: 5rem;
+  padding: 3px 2px;
+  outline: none;
+  font-size: 14px;
+}
+
+.form button {
+  cursor: pointer;
+}

@@ -1,0 +1,13 @@
+.lace {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 70rem;
+  background-color: #e1bee7;
+  /* background-position: ; */
+  height: fit-content;
+  /* margin: 10px */
+}
+
+.backgroundimage {
+  margin: 10px 10px;
+}
