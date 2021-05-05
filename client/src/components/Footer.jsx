@@ -1,12 +1,12 @@
 // import { NavLink } from "react-router-dom";
-import "./Footer.css";
-import { FaFacebook } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
-import { FaInstagram } from "react-icons/fa";
-import { FaPinterest } from "react-icons/fa";
+import './Footer.css'
+import {FaFacebook} from 'react-icons/fa'
+import {FaTwitter} from 'react-icons/fa'
+import {FaInstagram} from 'react-icons/fa'
+import {FaPinterest} from 'react-icons/fa'
 const Footer = () => {
   return (
-    <footer className="page-footer">
+    <footer className=" page-footer">
       <nav className="social">
         <h2>YOU ME TIME</h2>
 
@@ -51,6 +51,6 @@ const Footer = () => {
         <div className="service">Service Page</div>
       </div>
     </footer>
-  );
-};
-export default Footer;
+  )
+}
+export default Footer

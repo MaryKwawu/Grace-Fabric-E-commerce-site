@@ -1,9 +1,6 @@
-import {useContext, useState} from 'react'
-// import { UserContext } from "../context/UserContext";
-// import { AuthContext } from "../context/AuthContext";
-import {useHistory} from 'react-router-dom'
-import {NavLink} from 'react-router-dom'
-import './Login.css'
+import * as React from 'react'
+import {Box, Input, Stack, Button, Heading, Text} from '@chakra-ui/react'
+import {Link} from 'react-router-dom'
 
 const fetchQuery = async ({uri, method = 'GET', body = null}) => {
   const response = await fetch(uri, {
@@ -19,10 +16,50 @@ const fetchQuery = async ({uri, method = 'GET', body = null}) => {
 
 const LoginPage = () => {
   return (
-    <div className="w-full h-screen bg-green-700">
-      parent
-      <div className="w-1/4 bg-blue-500 h-2/4">login</div>
-    </div>
+    <Box w="100%" d="flex" justifyContent="center" alignItems="center">
+      <Stack
+        w="30rem"
+        h="fit-content"
+        border="1px solid #eee"
+        borderRadius="5px"
+        p="3rem"
+        shadow="md"
+        my="10rem"
+      >
+        <Heading textAlign="center">Sign into your account</Heading>
+        <form>
+          <Box my="1rem">
+            <label htmlFor="email">Email</label>
+            <Input size="lg" id="email" type="email" aria-label="email" />
+          </Box>
+
+          <Box my="1rem">
+            <label htmlFor="password">Password</label>
+            <Input
+              size="lg"
+              id="password"
+              type="password"
+              aria-label="password"
+            />
+          </Box>
+
+          <Box my="1rem">
+            <Button size="lg" w="100%" colorScheme="green">
+              Sign in
+            </Button>
+          </Box>
+
+          <p>
+            <Text fontSize="0.8rem" textAlign="center">
+              Don't have an account?{' '}
+              <Link to="/register" color="green">
+                Sign up for free
+              </Link>
+            </Text>
+          </p>
+        </form>
+      </Stack>
+    </Box>
   )
 }
 export default LoginPage
