@@ -12,4 +12,17 @@ app.use("/user", require("./routes/userRouter"));
 
 app.use("/products", require("./routes/productRouter"));
 
-app.listen(4000, () => console.log("Server functioning"));
+const port = process.env.NODE_ENV || 4000;
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+
+  process.once("SIGUSR2", function () {
+    process.kill(process.pid, "SIGUSR2");
+  });
+
+  process.on("SIGINT", function () {
+    // this is only called on ctrl+c, not restart
+    process.kill(process.pid, "SIGINT");
+  });
+});
