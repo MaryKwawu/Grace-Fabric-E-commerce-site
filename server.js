@@ -3,15 +3,15 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
 
-//connect to database
-require("./config/dbConnect");
-
 try {
   const key = dotenv.config({ path: `./.env` });
   console.log("dotenv loaded");
 } catch (error) {
   console.log(error, "error loading dotenv");
 }
+
+//connect to database
+require("./config/dbConnect");
 
 // excluding dotenv config from production
 if (process.env.NODE_ENV !== "production") require("dotenv").config();

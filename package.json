@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "engines": {
-    "node": "12.x",
+    "node": "14.x",
     "yarn": "1.x"
   },
   "main": "server.js",
@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "concurrently": "^6.0.2",
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.4",
     "prettier": "^2.2.1"
   }
