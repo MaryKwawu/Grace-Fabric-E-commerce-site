@@ -31,7 +31,7 @@ app
       require("child_process").exec(
         `echo ${process.env.PASS} | sudo -S kill -9 $(lsof -t -i:${port})`,
         (err) => {
-          if (err) console.log(`error from child_process exec: ${err}`);
+          if (err) console.log(`error from child_process.exec: ${err}`);
         }
       );
     }

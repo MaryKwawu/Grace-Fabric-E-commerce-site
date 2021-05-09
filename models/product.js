@@ -17,7 +17,6 @@ const productSchema = new Schema(
     typeOfFabric: {
       type: String,
       required: [true, " fabric type is required "],
-      
     },
     // typeOfFabric: {
     //   required: [true, " fabric type is required "],
@@ -47,6 +46,10 @@ const productSchema = new Schema(
     typeOfTextile: {
       type: String,
       required: [true, " textile type is required "],
+    },
+    imagePath: {
+      type: String,
+      required: [true, "image path is required"],
     },
   },
   {

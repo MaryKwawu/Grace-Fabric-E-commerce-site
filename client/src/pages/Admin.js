@@ -10,16 +10,46 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import * as React from "react";
+import { addNewProduct } from "../services";
 
 export function Admin() {
   const { register, formState, handleSubmit } = useForm({
     mode: "all",
     shouldFocusError: true,
   });
+
+  async function saveProduct(data) {
+    const {
+      productName,
+      description,
+      price,
+      typeOfFabric,
+      fabricNickName,
+      colourOfLinen,
+      yard,
+      itemsInStock,
+      typeOfTextile,
+      productImage,
+    } = data;
+    const formData = new FormData();
+    formData.append("productName", productName);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("typeOfFabric", typeOfFabric);
+    formData.append("fabricNickName", fabricNickName);
+    formData.append("colourOfLinen", colourOfLinen);
+    formData.append("yard", yard);
+    formData.append("itemsInStock", itemsInStock);
+    formData.append("typeOfTextile", typeOfTextile);
+    formData.append("productImage", productImage[0]);
+    const newProduct = await addNewProduct(formData);
+
+    console.log(newProduct);
+  }
   return (
     <Box p="2rem">
       <Heading my="1rem">Add Product</Heading>
-      <form encType="multipart/form-data">
+      <form onSubmit={handleSubmit(saveProduct)} encType="multipart/form-data">
         <Stack spacing="1rem">
           <Box>
             <label htmlFor="productName">Name of fabric</label>
@@ -164,6 +194,7 @@ export function Admin() {
               })}
               id="productImage"
               type="file"
+              name="productImage"
             />
           </Box>
 

@@ -21,6 +21,9 @@ const createProduct = async (req, res) => {
   const yard = req.body.yard;
   const itemsInStock = req.body.itemsInStock;
   const typeOfTextile = req.body.typeOfTextile;
+  const imagePath = req.file.path;
+
+  // console.log(req.files, req.file, req.body);
 
   const product = await Product.create({
     productName,
@@ -32,6 +35,7 @@ const createProduct = async (req, res) => {
     yard,
     itemsInStock,
     typeOfTextile,
+    imagePath,
   });
   res.status(201).json({ product });
 };
