@@ -7,49 +7,81 @@ import {
   Stack,
   Text,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import * as React from "react";
 import { addNewProduct } from "../services";
+import { useHistory } from "react-router-dom";
 
 export function Admin() {
+  const formRef = React.useRef();
   const { register, formState, handleSubmit } = useForm({
     mode: "all",
     shouldFocusError: true,
   });
+  const [addProductLoading, setAddProductLoading] = React.useState(false);
+  const toast = useToast();
 
   async function saveProduct(data) {
-    const {
-      productName,
-      description,
-      price,
-      typeOfFabric,
-      fabricNickName,
-      colourOfLinen,
-      yard,
-      itemsInStock,
-      typeOfTextile,
-      productImage,
-    } = data;
-    const formData = new FormData();
-    formData.append("productName", productName);
-    formData.append("description", description);
-    formData.append("price", price);
-    formData.append("typeOfFabric", typeOfFabric);
-    formData.append("fabricNickName", fabricNickName);
-    formData.append("colourOfLinen", colourOfLinen);
-    formData.append("yard", yard);
-    formData.append("itemsInStock", itemsInStock);
-    formData.append("typeOfTextile", typeOfTextile);
-    formData.append("productImage", productImage[0]);
-    const newProduct = await addNewProduct(formData);
+    try {
+      const {
+        productName,
+        description,
+        price,
+        typeOfFabric,
+        fabricNickName,
+        colourOfLinen,
+        yard,
+        itemsInStock,
+        typeOfTextile,
+        productImage,
+      } = data;
+      const formData = new FormData();
+      formData.append("productName", productName);
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("typeOfFabric", typeOfFabric);
+      formData.append("fabricNickName", fabricNickName);
+      formData.append("colourOfLinen", colourOfLinen);
+      formData.append("yard", yard);
+      formData.append("itemsInStock", itemsInStock);
+      formData.append("typeOfTextile", typeOfTextile);
+      formData.append("productImage", productImage[0]);
 
-    console.log(newProduct);
+      setAddProductLoading(true);
+      const newProduct = await addNewProduct(formData);
+
+      if (newProduct) {
+        setAddProductLoading(false);
+        toast({
+          description: "Product added successfully",
+          isClosable: true,
+          status: "success",
+          position: "top",
+        });
+
+        formRef.current.reset();
+      }
+    } catch (e) {
+      toast({
+        description: "Could not add new product due to an  error",
+        isClosable: true,
+        status: "error",
+        position: "top",
+      });
+    } finally {
+      setAddProductLoading(false);
+    }
   }
   return (
     <Box p="2rem">
       <Heading my="1rem">Add Product</Heading>
-      <form onSubmit={handleSubmit(saveProduct)} encType="multipart/form-data">
+      <form
+        ref={formRef}
+        onSubmit={handleSubmit(saveProduct)}
+        encType="multipart/form-data"
+      >
         <Stack spacing="1rem">
           <Box>
             <label htmlFor="productName">Name of fabric</label>
@@ -200,9 +232,13 @@ export function Admin() {
 
           <Box>
             <Button
-              disabled={!formState.isDirty || !formState.isValid}
+              isLoading={addProductLoading}
+              disabled={
+                !formState.isDirty || !formState.isValid | addProductLoading
+              }
               type="submit"
               colorScheme="green"
+              loadingText="adding new product..."
             >
               Add product
             </Button>
@@ -212,13 +248,3 @@ export function Admin() {
     </Box>
   );
 }
-
-// productName,
-//     description,
-//     price,
-//     typeOfFabric,
-//     fabricNickName,
-//     colourOfLinen,
-//     yard,
-//     itemsInStock,
-//     typeOfTextile,

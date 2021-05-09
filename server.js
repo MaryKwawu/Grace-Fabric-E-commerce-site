@@ -1,5 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require("cors");
+const path = require("path");
 
 //connect to database
 require("./config/dbConnect");
@@ -11,6 +13,9 @@ try {
   console.log(error, "error loading dotenv");
 }
 
+// excluding dotenv config from production
+if (process.env.NODE_ENV !== "production") require("dotenv").config();
+
 const app = express();
 app.use(express.json());
 
@@ -20,8 +25,23 @@ app.use("/user", require("./routes/userRouter"));
 
 app.use("/products", require("./routes/productRouter"));
 
-const port = process.env.NODE_ENV || 4000;
+// CORS Middleware
+app.use(cors());
 
+// express middleware handling the form parsing
+app.use(express.urlencoded({ extended: false }));
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  });
+}
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+const port = process.env.NODE_ENV || 4000;
 app
   .listen(port, () => {
     console.log(`Server running on port ${port}`);
