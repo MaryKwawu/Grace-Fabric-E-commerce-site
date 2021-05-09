@@ -96,11 +96,36 @@ export function ProductCard({
 
     //Where user has cart
     if (cart) {
+      let itemsBought = [];
+      const existingItem = cart.itemsBought.find((item) => {
+        if (item.productId._id) {
+          return item.productId._id === productId;
+        }
+        return item.productId === productId;
+      });
+
+      console.log(existingItem, "itemE");
+
+      if (existingItem) {
+        existingItem.quantity = existingItem.quantity + 1;
+
+        const listWithoutExistingItem = cart.itemsBought.filter((item) => {
+          if (item.productId._id) {
+            return item.productId._id !== productId;
+          }
+          return item.productId !== productId;
+        });
+        itemsBought = [existingItem, ...listWithoutExistingItem];
+
+        console.log(existingItem, listWithoutExistingItem);
+      } else {
+        itemsBought = [...cart.itemsBought, { productId, quantity: 1 }];
+      }
       try {
         setAddingToCart(productId);
         const payload = {
           userId: user._id,
-          itemsBought: [...cart.itemsBought, { productId, quantity: 1 }],
+          itemsBought,
           totalOfCloth: cart.totalOfCloth + 1,
           shippingCost: cart.shippingCost + price,
           shippingPlusClothTotalCost:
@@ -116,7 +141,6 @@ export function ProductCard({
             isClosable: true,
           });
 
-          console.log(updatedCart, "updated cart");
           setCart(updatedCart.data.cart);
           window.localStorage.setItem(
             "cart",

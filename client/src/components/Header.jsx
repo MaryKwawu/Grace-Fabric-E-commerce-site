@@ -23,9 +23,15 @@ const Header = () => {
   const [user, setUser] = React.useContext(UserContext);
   const [cart, setCart] = React.useContext(CartContext);
 
-  console.log("header cart", cart);
-
   const router = useHistory();
+
+  const numOfItemsInCart = React.useMemo(() => {
+    if (cart) {
+      return cart.itemsBought.reduce((acc, item) => {
+        return acc + item.quantity;
+      }, 0);
+    }
+  }, [cart]);
 
   function UserMenu() {
     return user ? (
@@ -63,9 +69,9 @@ const Header = () => {
   }
 
   React.useEffect(() => {
-    getCart(user._id).then(({ data }) => {
-      setCart(data.cart);
-      window.localStorage.setItem("cart", JSON.stringify(data.cart));
+    getCart(user._id).then(({ data: { cart } }) => {
+      setCart(cart);
+      window.localStorage.setItem("cart", JSON.stringify(cart));
     });
   }, []);
 
@@ -119,7 +125,7 @@ const Header = () => {
                 <FaCartArrowDown size={30} />
                 <Box pos="absolute" zIndex={100} bottom="17px" right={0}>
                   {cart && (
-                    <Badge borderRadius="10px">{cart.itemsBought.length}</Badge>
+                    <Badge borderRadius="10px">{numOfItemsInCart}</Badge>
                   )}
                 </Box>
               </NavLink>

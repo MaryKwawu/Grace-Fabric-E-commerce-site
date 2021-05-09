@@ -29,10 +29,7 @@ function App() {
       }
     >
       <CartContextProvider
-        value={
-          window.localStorage.getItem("cart") &&
-          JSON.parse(window.localStorage.getItem("cart"))
-        }
+        value={JSON.parse(window.localStorage.getItem("cart"))}
       >
         <React.StrictMode>
           <Header />
