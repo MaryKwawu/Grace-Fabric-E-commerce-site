@@ -42,7 +42,7 @@ if (process.env.NODE_ENV === "production") {
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-const port = process.env.NODE_ENV || 4000;
+const port = process.env.NODE_ENV === "production" ? process.env.PORT : 4000;
 app
   .listen(port, () => {
     console.log(`Server running on port ${port}`);
