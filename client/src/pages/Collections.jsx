@@ -26,7 +26,9 @@ const Collections = () => {
     setProductsLoading(true);
     getProducts()
       .then(({ data: { product } }) => {
-        setProducts(product);
+        setProducts(
+          product.filter((product) => product.typeOfTextile === "collections")
+        );
 
         setProductsLoading(false);
       })

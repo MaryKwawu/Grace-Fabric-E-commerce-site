@@ -1,82 +1,95 @@
-import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
-import { NavLink } from "react-router-dom";
-import "./TheBrand.css";
-const TheBrand = () => {
-  const [user, setUser] = useContext(UserContext);
-  return (
-    <>
-      <div className="TheBrand">
-        <div className="Brand-content ">
-          <p className="content">We have all fabrics for all occassions</p>
-          {/* <button onClick={() => setUser("Contact")}>Change User</button> */}
-          {/* <button>
-              <NavLink className="changeuser" to="/profile">
-                Changeuser
-              </NavLink>
-            </button> */}
-        </div>
-        <div className=" h-2rem">
-          <h1>bbbbbbbbbbbbb</h1>
-          <div className="brand">
-            <img
-              src="/brand/hd.jpg"
-              alt="brand"
-              className="p-6 h-96 rounded-full overflow-hidden "
-            />
-            <img
-              src="/brand/ha.jpg"
-              alt="brand"
-              className="p-6 h-96 rounded-full overflow-hidden"
-            />
-            <img
-              src="/brand/hh.jpg"
-              alt="brand"
-              className="p-6  h-96 rounded-full overflow-hidden"
-            />
-          </div>
-          <h1>bbbbbbbbbbbbb</h1>
-          <div className="brand">
-            <img
-              src="/brand/hi.jpg"
-              alt="brand"
-              className="p-6 h-96 rounded-full overflow-hidden"
-            />
-            <img
-              src="/brand/hk.jpg"
-              alt="brand"
-              className="p-6 h-96 rounded-full overflow-hidden"
-            />
-            <img
-              src="/brand/hq.jpg"
-              alt="brand"
-              className="p-6 h-96 rounded-full overflow-hidden"
-            />
-          </div>
+import React from "react";
+import { Fade } from "react-slideshow-image";
+import "react-slideshow-image/dist/styles.css";
+import "./Collections.css";
+import { getProducts } from "../services";
+import { Box, chakra, Flex, SimpleGrid, Text } from "@chakra-ui/react";
+import { ProductCard } from "../components/ProductCard";
+import { ProductGridSkeleton } from "../components/ProductGridSkeleton";
 
-          <h1>hhhhhbbbbbbbbbbbbbbbb</h1>
-          <div className="brand">
-            <img
-              src="/brand/hs.jpg"
-              alt="brand"
-              className="p-6 h-96 rounded-full overflow-hidden"
-            />
-            <img
-              src="/brand/hw.jpg"
-              alt="brand"
-              className="p-6 h-96 rounded-full overflow-hidden"
-            />
-            <img
-              src="/brand/hy.jpg"
-              alt="brand"
-              className="p-6 h-96 rounded-full overflow-hidden"
-            />
-          </div>
-        </div>
-      </div>
-      <h1>The Brand</h1>
-    </>
+const slideImages = [
+  "/collections/my.jpg",
+  "/collections/yk.jpg",
+  "/collections/fp.jpg",
+  "/collections/fl.jpg",
+  "/collections/oo.jpg",
+  "/collections/pk.jpg",
+  "/collections/fk.jpg",
+];
+
+const TheBrand = () => {
+  const [products, setProducts] = React.useState([]);
+  const [productsLoading, setProductsLoading] = React.useState(false);
+  const [error, setError] = React.useState();
+
+  React.useEffect(() => {
+    setProductsLoading(true);
+    getProducts()
+      .then(({ data: { product } }) => {
+        setProducts(
+          product.filter((product) => product.typeOfTextile === "the brand")
+        );
+
+        setProductsLoading(false);
+      })
+      .catch((e) => setError(e))
+      .finally(() => setProductsLoading(false));
+  }, []);
+
+  const productGrid = products.length ? (
+    <SimpleGrid columns={[1, 1, 2, 3]} spacing="40px">
+      {products.map(
+        ({
+          _id,
+          productName,
+          price,
+          typeOfFabric,
+          fabricNickName,
+          colourOfLinen,
+          imagePath,
+        }) => (
+          <ProductCard
+            key={_id}
+            typeOfFabric={typeOfFabric}
+            productName={productName}
+            colourOfLinen={colourOfLinen}
+            fabricNickName={fabricNickName}
+            imagePath={imagePath}
+            price={price}
+            id={_id}
+          />
+        )
+      )}
+    </SimpleGrid>
+  ) : (
+    <Flex w="100%" h="100vh" align="center" justify="center">
+      <Box>
+        <Text textAlign="center" fontSize="5rem">
+          😥
+        </Text>
+
+        <Text textAlign="center">
+          Sorry, No products available. Check again soon.
+        </Text>
+      </Box>
+    </Flex>
+  );
+
+  return (
+    <Box p="5rem">
+      <Box h="500px" w="100%">
+        <Fade arrows={false}>
+          {slideImages.map((each, index) => (
+            <div key={`slide-${index}`} className="each-slide">
+              <div style={{ backgroundImage: `url(${each})` }}></div>
+            </div>
+          ))}
+        </Fade>
+      </Box>
+      <Box mt="2rem">
+        {productsLoading ? <ProductGridSkeleton /> : productGrid}
+      </Box>
+    </Box>
   );
 };
-
 export default TheBrand;
