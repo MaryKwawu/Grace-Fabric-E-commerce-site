@@ -7,7 +7,8 @@ const getAllCarts = async (req, res) => {
 
 const getSingleCart = async (req, res) => {
   const { userId } = req.params;
-  const cart = await Cart.findOne().where({ userId }).exec();
+  const cart = await Cart.findOne({ userId }).populate("itemsBought.productId");
+
   res.status(200).json({ cart });
 };
 const createCart = async (req, res) => {
@@ -28,9 +29,12 @@ const createCart = async (req, res) => {
 };
 
 const updateCart = async (req, res) => {
-  const { id } = req.params;
-  const cart = await Cart.findByIdAndUpdate(id, req.body, { new: true });
-  res.status(200).json({ cart });
+  const { userId } = req.params;
+  const cart = await Cart.findOne({ userId });
+  const updatedCart = await Cart.findByIdAndUpdate(cart._id, req.body, {
+    new: true,
+  }).populate("itemsBought.productId");
+  res.status(200).json({ cart: updatedCart });
 };
 
 const deleteCart = async (req, res) => {

@@ -96,8 +96,6 @@ export function ProductCard({
 
     //Where user has cart
     if (cart) {
-      console.log(cart, "second cart");
-
       try {
         setAddingToCart(productId);
         const payload = {
@@ -109,7 +107,7 @@ export function ProductCard({
             cart.shippingPlusClothTotalCost + price + 10,
         };
 
-        const updatedCart = await updateCart(cart._id, payload);
+        const updatedCart = await updateCart(user._id, payload);
         if (updatedCart) {
           toast({
             position: "top",
@@ -118,6 +116,7 @@ export function ProductCard({
             isClosable: true,
           });
 
+          console.log(updatedCart, "updated cart");
           setCart(updatedCart.data.cart);
           window.localStorage.setItem(
             "cart",

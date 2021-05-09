@@ -23,7 +23,7 @@ const Header = () => {
   const [user, setUser] = React.useContext(UserContext);
   const [cart, setCart] = React.useContext(CartContext);
 
-  console.log(cart, "header cart");
+  console.log("header cart", cart);
 
   const router = useHistory();
 
@@ -62,13 +62,12 @@ const Header = () => {
     );
   }
 
-  // React.useEffect(() => {
-  //   getCart(user._id).then(({ data }) => {
-  //     console.log(data);
-  //     // setCart(data);
-  //     // window.localStorage.setItem("cart", JSON.stringify(data));
-  //   });
-  // }, []);
+  React.useEffect(() => {
+    getCart(user._id).then(({ data }) => {
+      setCart(data.cart);
+      window.localStorage.setItem("cart", JSON.stringify(data.cart));
+    });
+  }, []);
 
   return (
     <Box zIndex="sticky">

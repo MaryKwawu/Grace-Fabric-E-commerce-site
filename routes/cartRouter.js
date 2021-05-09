@@ -7,7 +7,7 @@ router
   .post(cartController.createCart);
 
 router
-  .route("/:id")
+  .route("/:userId")
   .get(cartController.getSingleCart)
   .patch(cartController.updateCart)
   .delete(cartController.deleteCart);
