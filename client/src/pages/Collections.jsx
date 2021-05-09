@@ -1,136 +1,93 @@
-import { useContext } from "react";
-//import { UserContext } from "../context/UserContext";
-//import { NavLink } from "react-router-dom";
-import { useState } from "react";
 import React from "react";
-import { Slide } from "react-slideshow-image";
+import { Fade } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 import "./Collections.css";
+import { getProducts } from "../services";
+import { Box, chakra, Flex, SimpleGrid, Text } from "@chakra-ui/react";
+import { ProductCard } from "../components/ProductCard";
+import { ProductGridSkeleton } from "../components/ProductGridSkeleton";
 
-const slideImage = [
-  "collections/my.jpg",
-  "collections/yk.jpg",
-  "collections/fp.jpg",
-  "collections/fl.jpg",
-  "collections/oo.jpg",
-  "collections/pk.jpg",
-  "collections/fk.jpg",
+const slideImages = [
+  "/collections/my.jpg",
+  "/collections/yk.jpg",
+  "/collections/fp.jpg",
+  "/collections/fl.jpg",
+  "/collections/oo.jpg",
+  "/collections/pk.jpg",
+  "/collections/fk.jpg",
 ];
 
 const Collections = () => {
-  const [images, setImages] = useState([
-    "ff.jpg",
-    "fz.jpg",
-    "ad.jpg",
-    "aa.jpg",
-    "ab.jpg",
-    "az.jpg",
-    "bb.jpg",
-    "bc.jpg",
-    "bd.jpg",
-    "be.jpg",
-    "bz.jpg",
-    "bg.jpg",
-    "bh.jpg",
-    "bi.jpg",
-    "bk.jpg",
-    "bl.jpg",
-    "bn.jpg",
-    "bm.jpg",
-    "bo.jpg",
-    "ca.jpg",
-    "cb.jpg",
-    "cc.jpg",
-    "cd.jpg",
-    "ce.jpg",
-    "cf.jpg",
-    "cg.jpg",
-    "ci.jpg",
-    "ch.jpg",
-    "cj.jpg",
-    "ck.jpg",
-    "cl.jpg",
-    "cn.jpg",
-    "cm.jpg",
-    "co.jpg",
-    "cq.jpg",
-    "cr.jpg",
-    "cs.jpg",
-    "cv.jpg",
-    "cw.jpg",
-    "cx.jpg",
-  ]);
-  console.log(images);
-  return (
-    <>
-      <div
-        className=" fabricwall container1 mx-auto"
-        style={{ backgroundImage: `url("/africa/wl.jpg") ` }}
-      >
-        <div className="py-10 mx-96">
-          <Slide easing="ease ">
-            {/* <div className=""> */}
-            <div className="each-slide h-64">
-              <div
-                style={{ backgroundImage: `url("collections/fk.jpg")` }}
-                className=""
-              ></div>
-            </div>
-            <div className="each-slide">
-              <div
-                style={{ backgroundImage: `url("/collections/pk.jpg")` }}
-                className="h-40"
-              ></div>
-            </div>
-            <div className="each-slide">
-              <div
-                style={{ backgroundImage: `url("/collections/oo.jpg")` }}
-                className="h-40"
-              ></div>
-            </div>
-            <div className="each-slide">
-              <div
-                style={{ backgroundImage: `url("/collections/fl.jpg")` }}
-                className="h-40"
-              ></div>
-            </div>
-            <div className="each-slide">
-              <div
-                style={{ backgroundImage: `url("/colllections/fp.jpg")` }}
-                className="h-40 object-center"
-              ></div>
-            </div>
-            <div className="each-slide">
-              <div
-                style={{ backgroundImage: `url("/collections/my.jpg")` }}
-                className="h-40"
-              ></div>
-            </div>
-            <div className="each-slide">
-              <div
-                style={{ backgroundImage: `url("/collections/yk.jpg")` }}
-                className="h-40"
-              ></div>
-            </div>
-            {/* </div> */}
-          </Slide>
-        </div>
-      </div>
+  const [products, setProducts] = React.useState([]);
+  const [productsLoading, setProductsLoading] = React.useState(false);
+  const [error, setError] = React.useState();
 
-      <div className="grid grid-cols-6 gap-4 py-5 my-6 bg-purple-300">
-        {images.map((currentImage, i) => (
-          <>
-            <div className="h-60 rounded-3xl overflow-hidden">
-              <img
-                key={"image" + i}
-                src={`/collections/${currentImage}`}
-                className="inline-block w-full  h-full"
-              />
+  React.useEffect(() => {
+    setProductsLoading(true);
+    getProducts()
+      .then(({ data: { product } }) => {
+        setProducts(product);
+
+        setProductsLoading(false);
+      })
+      .catch((e) => setError(e))
+      .finally(() => setProductsLoading(false));
+  }, []);
+
+  const productGrid = products.length ? (
+    <SimpleGrid columns={[1, 1, 2, 3]} spacing="40px">
+      {products.map(
+        ({
+          _id,
+          productName,
+          price,
+          typeOfFabric,
+          fabricNickName,
+          colourOfLinen,
+          imagePath,
+        }) => (
+          <ProductCard
+            key={_id}
+            typeOfFabric={typeOfFabric}
+            productName={productName}
+            colourOfLinen={colourOfLinen}
+            fabricNickName={fabricNickName}
+            imagePath={imagePath}
+            price={price}
+            id={_id}
+          />
+        )
+      )}
+    </SimpleGrid>
+  ) : (
+    <Flex w="100%" h="100vh" align="center" justify="center">
+      <Box>
+        <Text textAlign="center" fontSize="5rem">
+          😥
+        </Text>
+
+        <Text textAlign="center">
+          Sorry, No products available. Check again soon.
+        </Text>
+      </Box>
+    </Flex>
+  );
+
+  return (
+    <Box p="5rem">
+      <Box h="500px" w="100%">
+        <Fade arrows={false}>
+          {slideImages.map((each, index) => (
+            <div key={`slide-${index}`} className="each-slide">
+              <div style={{ backgroundImage: `url(${each})` }}></div>
             </div>
-          </>
-        ))}
-      </div>
-    </>
+          ))}
+        </Fade>
+      </Box>
+      <Box mt="2rem">
+        {productsLoading ? <ProductGridSkeleton /> : productGrid}
+      </Box>
+    </Box>
   );
 };
 export default Collections;
