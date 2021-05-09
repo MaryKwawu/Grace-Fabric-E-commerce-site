@@ -21,8 +21,6 @@ const FabricWall = () => {
     setProductsLoading(true);
     getProducts()
       .then(({ data: { product } }) => {
-        console.log(product);
-
         setProducts(product);
 
         setProductsLoading(false);

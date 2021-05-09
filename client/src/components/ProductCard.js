@@ -17,7 +17,7 @@ import { FaCartPlus } from "react-icons/all";
 import { UserContext } from "../context/UserContext";
 import { useHistory } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
-import { createCart } from "../services";
+import { createCart, updateCart } from "../services";
 
 export function ProductCard({
   id,
@@ -34,7 +34,8 @@ export function ProductCard({
   const toast = useToast();
 
   const [firstTimeCart, setFirstTimeCart] = React.useState(false);
-  const [fistTimeCartProgress, setFirstTimeCartProgress] = React.useState(0);
+  const [firstTimeCartProgress, setFirstTimeCartProgress] = React.useState(0);
+  const [addingToCart, setAddingToCart] = React.useState(false);
 
   async function addToCart({ productId, price }) {
     // Where user is not logged in
@@ -75,9 +76,9 @@ export function ProductCard({
             isClosable: true,
           });
 
-          setCart(cart.data);
+          setCart(cart.data.cart);
 
-          window.localStorage.setItem("cart", JSON.stringify(cart.data));
+          window.localStorage.setItem("cart", JSON.stringify(cart.data.cart));
         }
       } catch (e) {
         toast({
@@ -90,6 +91,52 @@ export function ProductCard({
         console.log(e);
       } finally {
         setFirstTimeCart(false);
+      }
+    }
+
+    //Where user has cart
+    if (cart) {
+      console.log(cart, "second cart");
+
+      try {
+        setAddingToCart(productId);
+        const payload = {
+          userId: user._id,
+          itemsBought: [...cart.itemsBought, { productId, quantity: 1 }],
+          totalOfCloth: cart.totalOfCloth + 1,
+          shippingCost: cart.shippingCost + price,
+          shippingPlusClothTotalCost:
+            cart.shippingPlusClothTotalCost + price + 10,
+        };
+
+        const updatedCart = await updateCart(cart._id, payload);
+        if (updatedCart) {
+          toast({
+            position: "top",
+            status: "success",
+            description: "Item added to cart successfully!",
+            isClosable: true,
+          });
+
+          setCart(updatedCart.data.cart);
+          window.localStorage.setItem(
+            "cart",
+            JSON.stringify(updatedCart.data.cart)
+          );
+
+          setAddingToCart(false);
+        }
+      } catch (e) {
+        toast({
+          position: "top",
+          status: "error",
+          description: "Failed to add product to cart",
+          isClosable: true,
+        });
+
+        console.log(e);
+      } finally {
+        setAddingToCart(false);
       }
     }
   }
@@ -113,7 +160,7 @@ export function ProductCard({
             <Progress
               hasStripe
               isAnimated={true}
-              value={fistTimeCartProgress}
+              value={firstTimeCartProgress}
               size="xs"
               colorScheme="green"
             />
@@ -157,6 +204,9 @@ export function ProductCard({
         </Box>
         <Box>
           <Button
+            isLoading={addingToCart && addingToCart === id}
+            disabled={addingToCart && addingToCart === id}
+            loadingText="Adding to cart..."
             size="lg"
             w="100%"
             colorScheme="green"
