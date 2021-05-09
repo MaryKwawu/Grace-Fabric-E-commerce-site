@@ -69,10 +69,12 @@ const Header = () => {
   }
 
   React.useEffect(() => {
-    getCart(user._id).then(({ data: { cart } }) => {
-      setCart(cart);
-      window.localStorage.setItem("cart", JSON.stringify(cart));
-    });
+    if (user) {
+      getCart(user._id).then(({ data: { cart } }) => {
+        setCart(cart);
+        window.localStorage.setItem("cart", JSON.stringify(cart));
+      });
+    }
   }, []);
 
   return (
