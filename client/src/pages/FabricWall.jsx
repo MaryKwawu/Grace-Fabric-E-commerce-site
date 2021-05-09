@@ -30,50 +30,48 @@ const FabricWall = () => {
   return (
     <>
       <section className="min-h-screen my-2 flex">
-        <BrowserRouter>
-          <aside className="w-2/12 min-h-full flex flex-col overflow-y-hidden bg-pink-200">
-            <div className="py-8 px-4 text-center">
-              <span className="menu-icon" onClick={handleClick}>
-                <FaToggleOff size={40} className={toggleMenu ? "off" : ""} />
-                <FaToggleOn size={40} className={!toggleMenu ? "off" : ""} />
-              </span>
-            </div>
+        <aside className="w-2/12 min-h-full flex flex-col overflow-y-hidden bg-pink-200">
+          <div className="py-8 px-4 text-center">
+            <span className="menu-icon" onClick={handleClick}>
+              <FaToggleOff size={40} className={toggleMenu ? "off" : ""} />
+              <FaToggleOn size={40} className={!toggleMenu ? "off" : ""} />
+            </span>
+          </div>
 
-            <ul
-              className={
-                (toggleMenu ? "full-menu" : "min-menu" + " " + "off") +
-                " flex " +
-                " flex-col " +
-                " fabric-menu "
-              }
-            >
-              <li>
-                <Link to="/african-wax-print">African wax Print</Link>
-              </li>
-              <li>
-                <Link exact to="/">
-                  Plain Fabric
-                </Link>
-              </li>
-              <li>
-                <Link to="/african-lace">Lace</Link>
-              </li>
-            </ul>
-          </aside>
-          <Switch>
-            <main className="w-10/12 min-h-full">
-              <Route exact path="/" component={Plain}>
-                {/* <Plain /> */}
-              </Route>
-              <Route path="/african-lace" component={Lace}>
-                {/* <Lace /> */}
-              </Route>
-              <Route path="/african-wax-print" component={AfricanWax}>
-                {/* <AfricanWax /> */}
-              </Route>
-            </main>
-          </Switch>
-        </BrowserRouter>
+          <ul
+            className={
+              (toggleMenu ? "full-menu" : "min-menu" + " " + "off") +
+              " flex " +
+              " flex-col " +
+              " fabric-menu "
+            }
+          >
+            <li>
+              <Link to="/african-wax-print">African wax Print</Link>
+            </li>
+            <li>
+              <Link exact to="/">
+                Plain Fabric
+              </Link>
+            </li>
+            <li>
+              <Link to="/african-lace">Lace</Link>
+            </li>
+          </ul>
+        </aside>
+        <Switch>
+          <main className="w-10/12 min-h-full">
+            <Route exact path="/" component={Plain}>
+              {/* <Plain /> */}
+            </Route>
+            <Route path="/african-lace" component={Lace}>
+              {/* <Lace /> */}
+            </Route>
+            <Route path="/african-wax-print" component={AfricanWax}>
+              {/* <AfricanWax /> */}
+            </Route>
+          </main>
+        </Switch>
       </section>
     </>
   );

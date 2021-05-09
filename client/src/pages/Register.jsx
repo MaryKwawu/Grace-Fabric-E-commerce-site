@@ -49,12 +49,14 @@ function Register() {
         description: "Account created successfully. Please sign in",
         status: "success",
         position: "top",
+        isClosable: true,
       });
     } catch (error) {
       toast({
         description: "Something happened! Could not register",
         status: "error",
         position: "top",
+        isClosable: true,
       });
     } finally {
       setSignUpLoading(false);
@@ -232,7 +234,9 @@ function Register() {
               colorScheme="green"
               isLoading={signUpLoading}
               loadingText="Creating account"
-              disabled={!formState.isDirty || !formState.isValid}
+              disabled={
+                !formState.isDirty || !formState.isValid | signUpLoading
+              }
             >
               Create account
             </Button>

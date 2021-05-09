@@ -1,26 +1,67 @@
 import * as React from "react";
-import { Box, Input, Stack, Button, Heading, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Input,
+  Stack,
+  Button,
+  Heading,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { loginUser, getSignedInUser } from "../services";
+import { UserContext } from "../context/UserContext";
 
 const LoginPage = () => {
+  const [signInLoading, setSignInLoading] = React.useState(false);
+  const toast = useToast();
   const { register, handleSubmit, formState } = useForm({ mode: "all" });
 
+  const [user, setUser] = React.useContext(UserContext);
+
   async function login(formData) {
-    const { data } = await loginUser(formData);
+    try {
+      setSignInLoading(true);
+      const { data } = await loginUser(formData);
 
-    const { token } = data;
+      const { token } = data;
 
-    const { data: userData } = await getSignedInUser(token);
-    const { user } = userData;
+      if (token) {
+        setSignInLoading(false);
+        toast({
+          title: "Success",
+          description: "Logged in!",
+          status: "success",
+          position: "top",
+          isClosable: true,
+        });
+      }
 
-    const loggedInUser = JSON.stringify({
-      token,
-      user,
-    });
+      const { data: userData } = await getSignedInUser(token);
+      const { user } = userData;
 
-    window.localStorage.setItem("loggedInUser", loggedInUser);
+      const loggedInUser = {
+        token,
+        ...user,
+      };
+      const loggedInUserString = JSON.stringify({
+        token,
+        ...user,
+      });
+
+      window.localStorage.setItem("loggedInUser", loggedInUserString);
+      setUser(loggedInUser);
+    } catch (e) {
+      toast({
+        description: "Something happened! Could not sign in",
+        status: "error",
+        position: "top",
+        isClosable: true,
+      });
+    } finally {
+      setSignInLoading(false);
+    }
   }
 
   return (
@@ -82,7 +123,11 @@ const LoginPage = () => {
               size="lg"
               w="100%"
               colorScheme="green"
-              disabled={!formState.isDirty || !formState.isValid}
+              disabled={
+                !formState.isDirty || !formState.isValid | signInLoading
+              }
+              isLoading={signInLoading}
+              loadingText="signing in"
             >
               Sign in
             </Button>

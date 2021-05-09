@@ -1,9 +1,14 @@
 import { createContext, useState } from "react";
+import * as React from "react";
 
-export const UserContext = createContext("Mary");
+export const UserContext = createContext([
+  { token: "", user: {} },
+  function (value) {},
+]);
 
 const UserContextProvider = (props) => {
-  const [user, setUser] = useState("Guest User");
+  const { value } = props;
+  const [user, setUser] = useState(value);
 
   return (
     <UserContext.Provider value={[user, setUser]}>
