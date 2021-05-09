@@ -24,6 +24,7 @@ app.use("/auth", require("./routes/authRouter"));
 app.use("/user", require("./routes/userRouter"));
 
 app.use("/products", require("./routes/productRouter"));
+app.use("/cart", require("./routes/cartRouter"));
 
 // CORS Middleware
 app.use(cors());

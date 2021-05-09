@@ -32,7 +32,7 @@ const FabricWall = () => {
   }, []);
 
   const productGrid = products.length ? (
-    <SimpleGrid columns={[1, null, 3]} spacing="40px">
+    <SimpleGrid columns={[1, 1, 2, 3]} spacing="40px">
       {products.map(
         ({
           _id,
@@ -51,6 +51,7 @@ const FabricWall = () => {
             fabricNickName={fabricNickName}
             imagePath={imagePath}
             price={price}
+            id={_id}
           />
         )
       )}

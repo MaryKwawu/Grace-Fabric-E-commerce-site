@@ -28,7 +28,7 @@ const cartSchema = new Schema(
     //   type: [String],
     //   required: [true, " items bought is required. "],
     // },
-    totalofCloth: {
+    totalOfCloth: {
       type: Number,
       required: [true, " total of cloth is required "],
     },

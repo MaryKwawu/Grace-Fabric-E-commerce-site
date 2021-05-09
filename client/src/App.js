@@ -18,35 +18,40 @@ import Register from "./pages/Register";
 import UserContextProvider from "./context/UserContext";
 import { Box, Flex } from "@chakra-ui/react";
 import { Admin } from "./pages/Admin";
+import CartContextProvider from "./context/CartContext";
 function App() {
   return (
     <UserContextProvider
       value={JSON.parse(window.localStorage.getItem("loggedInUser"))}
     >
-      <React.StrictMode>
-        <Header />
+      <CartContextProvider
+        value={JSON.parse(window.localStorage.getItem("cart"))}
+      >
+        <React.StrictMode>
+          <Header />
 
-        <Flex justify="center">
-          <Box maxW="75rem">
-            <Switch>
-              <Route path="/admin" component={Admin} />
-              <Route exact path="/collections" component={Collections} />
-              <Route exact path="/the-brand" component={TheBrand} />
-              <Route exact path="/fashion-style" component={FashionStyle} />
-              <Route exact path="/images" component={Images} />
-              <Route exact path="/plain" component={Plain} />
-              <Route exact path="/lace" component={Lace} />
-              <Route exact path="/african-wax" component={AfricanWax} />
-              <Route exact path="/login" component={LoginPage} />
-              <Route exact path="/register" component={Register} />{" "}
-              {/* <Route component={NotFound} /> */}{" "}
-              <Route path="/" component={FabricWall} />
-            </Switch>
-          </Box>
-        </Flex>
+          <Flex justify="center">
+            <Box maxW="75rem">
+              <Switch>
+                <Route path="/admin" component={Admin} />
+                <Route exact path="/collections" component={Collections} />
+                <Route exact path="/the-brand" component={TheBrand} />
+                <Route exact path="/fashion-style" component={FashionStyle} />
+                <Route exact path="/images" component={Images} />
+                <Route exact path="/plain" component={Plain} />
+                <Route exact path="/lace" component={Lace} />
+                <Route exact path="/african-wax" component={AfricanWax} />
+                <Route exact path="/login" component={LoginPage} />
+                <Route exact path="/register" component={Register} />{" "}
+                {/* <Route component={NotFound} /> */}{" "}
+                <Route path="/" component={FabricWall} />
+              </Switch>
+            </Box>
+          </Flex>
 
-        <Footer />
-      </React.StrictMode>
+          <Footer />
+        </React.StrictMode>
+      </CartContextProvider>
     </UserContextProvider>
   );
 }

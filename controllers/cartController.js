@@ -6,8 +6,8 @@ const getAllCarts = async (req, res) => {
 };
 
 const getSingleCart = async (req, res) => {
-  const { id } = req.params;
-  const Cart = await Cart.findById(id);
+  const { userId } = req.params;
+  const cart = await Cart.findOne({ $where: { userId } });
   res.status(200).json({ cart });
 };
 const createCart = async (req, res) => {
@@ -16,8 +16,14 @@ const createCart = async (req, res) => {
   const totalOfCloth = req.body.totalOfCloth;
   const shippingCost = req.body.shippingCost;
   const shippingPlusClothTotalCost = req.body.shippingPlusClothTotalCost;
- 
-const cart = await Cart.create({ userId, itemsBought, totalOfCloth, shippingCost, shippingPlusClothTotalCost });
+
+  const cart = await Cart.create({
+    userId,
+    itemsBought,
+    totalOfCloth,
+    shippingCost,
+    shippingPlusClothTotalCost,
+  });
   res.status(201).json({ cart });
 };
 
