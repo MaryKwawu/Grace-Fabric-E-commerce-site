@@ -119,7 +119,7 @@ export function ProductCard({
 
         console.log(existingItem, listWithoutExistingItem);
       } else {
-        itemsBought = [...cart.itemsBought, { productId, quantity: 1 }];
+        itemsBought = [{ productId, quantity: 1 }, ...cart.itemsBought];
       }
       try {
         setAddingToCart(productId);

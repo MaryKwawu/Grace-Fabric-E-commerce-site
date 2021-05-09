@@ -11,11 +11,16 @@ import {
   Text,
   Button,
   Box,
+  useToast,
 } from "@chakra-ui/react";
 import { CartContext } from "../context/CartContext";
+import { updateCart } from "../services";
+import { UserContext } from "../context/UserContext";
 
 export function Cart() {
-  const [cart] = React.useContext(CartContext);
+  const [cart, setCart] = React.useContext(CartContext);
+  const [user] = React.useContext(UserContext);
+  const toast = useToast();
 
   const numOfItemsInCart = React.useMemo(() => {
     if (cart) {
@@ -26,13 +31,40 @@ export function Cart() {
   }, [cart]);
 
   async function removeItemFromCart(productId) {
-    const filterItemsBought = cart.itemsBought.filter((item) => {
-      return item.productId._id === productId;
+    console.log(cart);
+    const itemsWithoutRemovedItem = cart.itemsBought.filter((item) => {
+      if (item.productId._id) {
+        return item.productId._id !== productId;
+      }
+      return item.productId !== productId;
     });
 
-    console.log(filterItemsBought);
-  }
+    console.log(itemsWithoutRemovedItem.length);
 
+    const payload = {
+      userId: user._id,
+      itemsBought: itemsWithoutRemovedItem,
+      // totalOfCloth: cart.totalOfCloth - 1,      TODO: These calculations will be wrong in the real world. These numbers should be computed
+      // shippingCost: cart.shippingCost + price,
+      // shippingPlusClothTotalCost: cart.shippingPlusClothTotalCost + price + 10,
+    };
+
+    const updatedCart = await updateCart(user._id, payload);
+    if (updatedCart) {
+      toast({
+        position: "top",
+        status: "success",
+        description: "Item removed from cart successfully!",
+        isClosable: true,
+      });
+
+      setCart(updatedCart.data.cart);
+      window.localStorage.setItem(
+        "cart",
+        JSON.stringify(updatedCart.data.cart)
+      );
+    }
+  }
   return (
     <>
       {!numOfItemsInCart || numOfItemsInCart == 0 ? (
