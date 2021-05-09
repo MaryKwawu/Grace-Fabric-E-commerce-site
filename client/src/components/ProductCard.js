@@ -37,6 +37,8 @@ export function ProductCard({
   const [firstTimeCartProgress, setFirstTimeCartProgress] = React.useState(0);
   const [addingToCart, setAddingToCart] = React.useState(false);
 
+  console.log("backend url", process.env.REACT_APP_BACKEND_URL);
+
   async function addToCart({ productId, price }) {
     // Where user is not logged in
     if (!user) {
