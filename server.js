@@ -33,6 +33,9 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.get("/uploads/:image", (req, res) => {
+  res.sendFile(path.join(__dirname, "uploads", req.params.image));
+});
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
