@@ -32,6 +32,8 @@ app.use(cors());
 // express middleware handling the form parsing
 app.use(express.urlencoded({ extended: false }));
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 
@@ -40,8 +42,6 @@ if (process.env.NODE_ENV === "production") {
     // res.sendFile(path.resolve(process.cwd(), "client/build/index.html"));
   });
 }
-
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const port = process.env.NODE_ENV === "production" ? process.env.PORT : 4000;
 app
