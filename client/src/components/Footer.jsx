@@ -13,19 +13,19 @@ const Footer = () => {
         <div className="menu-social-link-haven"></div>
         <ul id="menu-social-links" className="menu">
           <li id="menu-item-27" className="facebook menu">
-            <FaFacebook color="#af7439" size={30} />
+            <FaFacebook color="#B270A2" size={30} />
             <a href="https://www.facebook.com/grace.fabric.771">Facebook</a>
           </li>
           <li id="menu-item-28" className="twitter menu-item menu">
-            <FaTwitter color="#af7439" size={30} />
+            <FaTwitter color="#B270A2" size={30} />
             <a href="https://twitter.com/Grace_Fabrics_Empire/">Twitter</a>
           </li>
           <li id="menu-item-30" className="instaram menu">
-            <FaInstagram color="#af7439" size={30} />
+            <FaInstagram color="#B270A2" size={30} />
             <a href="https://instagram.com/grace_fabrics_empire/">Instagram</a>
           </li>
           <li id="menu-item-31" className="pinterest menu">
-            <FaPinterest color="#af7439" size={30} />
+            <FaPinterest color="#B270A2" size={30} />
             <a href="https://www.pinterest.com/gracefabrics/">Pinterest</a>
           </li>
         </ul>
